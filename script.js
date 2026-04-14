@@ -5,7 +5,7 @@ async function getMovie() {
 
   try {
     // берём список фильмов по слову
-    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${genre}`);
+    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${genre}&type=movie`);
     const data = await response.json();
 
     if (!data.Search) {
