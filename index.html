@@ -1,28 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Movie Randomizer 🎬</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Movie Randomizer 🎬</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  text-align: center;
+  max-width: 600px;
+  width: 90%;
+}
+
+h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.controls {
+  margin-bottom: 20px;
+}
+
+select, button {
+  padding: 12px 18px;
+  margin: 5px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+}
+
+select {
+  background: #ffffff;
+  color: black;
+}
+
+button {
+  background: #ff4c68;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #ff2e4d;
+  transform: scale(1.05);
+}
+
+.card {
+  margin-top: 25px;
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.card img {
+  width: 220px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.plot {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.meta {
+  margin-top: 10px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.loader {
+  margin-top: 20px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
   <h1>🎬 Movie Randomizer</h1>
 
-  <select id="genre">
-    <option value="action">Action</option>
-    <option value="comedy">Comedy</option>
-    <option value="romance">Romance</option>
-    <option value="horror">Horror</option>
-  </select>
+  <div class="controls">
+    <select id="genre">
+      <option value="batman">Action</option>
+      <option value="love">Romance</option>
+      <option value="funny">Comedy</option>
+      <option value="ghost">Horror</option>
+    </select>
 
-  <button onclick="getMovie()">Find Movie</button>
+    <button onclick="getMovie()">🎲 Get Movie</button>
+  </div>
 
   <div id="movie"></div>
 </div>
 
-<script src="script.js"></script>
+<script>
+const API_KEY = "7с79519с";
+
+async function getMovie() {
+  const genre = document.getElementById("genre").value;
+
+  document.getElementById("movie").innerHTML = "⏳ Loading...";
+
+  try {
+    const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${genre}&type=movie`);
+    const data = await res.json();
+
+    if (!data.Search) {
+      document.getElementById("movie").innerHTML = "❌ Nothing found";
+      return;
+    }
+
+    const random = data.Search[Math.floor(Math.random() * data.Search.length)];
+
+    const detailsRes = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${random.imdbID}`);
+    const movie = await detailsRes.json();
+
+    document.getElementById("movie").innerHTML = `
+      <div class="card">
+        <img src="${movie.Poster}" alt="poster">
+        <div class="title">${movie.Title}</div>
+        <div class="plot">${movie.Plot}</div>
+        <div class="meta">⭐ ${movie.imdbRating} | 🎭 ${movie.Genre}</div>
+      </div>
+    `;
+
+  } catch (err) {
+    document.getElementById("movie").innerHTML = "⚠️ Error loading movie";
+  }
+}
+</script>
 
 </body>
 </html>
