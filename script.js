@@ -1,7 +1,7 @@
 const API_KEY = "7c79519c";
 
 async function getMovie() {
-  const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=movie`);
+  const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=action`);
   const data = await response.json();
 
   if (!data.Search) {
