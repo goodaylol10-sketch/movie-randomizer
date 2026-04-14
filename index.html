@@ -1,15 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Movie Randomizer</title>
+  <meta charset="UTF-8">
+  <title>Movie Randomizer 🎬</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Movie Randomizer</h1>
+<div class="container">
+  <h1>🎬 Movie Randomizer</h1>
 
-<button onclick="getMovie()">Найти фильм</button>
+  <select id="genre">
+    <option value="action">Action</option>
+    <option value="comedy">Comedy</option>
+    <option value="romance">Romance</option>
+    <option value="horror">Horror</option>
+  </select>
 
-<div id="movie"></div>
+  <button onclick="getMovie()">Find Movie</button>
+
+  <div id="movie"></div>
+</div>
 
 <script src="script.js"></script>
 
